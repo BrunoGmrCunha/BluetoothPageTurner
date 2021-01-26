@@ -8,3 +8,7 @@
 # Ignore all local history of files
 .history
 .ionide
+
+#MAC_OS
+.DS_Store
+
