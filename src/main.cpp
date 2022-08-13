@@ -4,47 +4,65 @@
 
 BleKeyboard bleKeyboard("Keyboard", "BRUNO CUNHA", 100);
 
-const int pinNumber = 27;
-bool pressed = false;
+const int left = 16;
+const int right = 17;
+
+bool pressedLeft = false;
+bool pressedRight = false;
 
 void setup()
 {
   Serial.begin(9600);
   Serial.println("Starting BLE work!");
-  pinMode(pinNumber, INPUT_PULLUP);
+  pinMode(left, INPUT);
+  pinMode(right, INPUT);
+
   bleKeyboard.begin();
-  bleKeyboard.setName("Keyboad");
-  //attachInterrupt(pinNumber, pressed, CHANGE);
+  bleKeyboard.setName("Organ Page Turner");
+  // attachInterrupt(pinNumber, pressed, CHANGE);
 }
 
 void loop()
 {
+
   if (bleKeyboard.isConnected())
   {
-    if (digitalRead(pinNumber))
+
+    unsigned long time = millis();
+    unsigned long currentTime = time;
+    while (digitalRead(left) && currentTime - time <= 20)
     {
-      int counter = 0;
-      while (digitalRead(pinNumber) && counter <= 250)
+      currentTime = millis();
+      pressedLeft = true;
+      delay(10);
+    }
+     while (digitalRead(right) && currentTime - time <= 20)
+    {
+      currentTime = millis();
+      pressedRight = true;
+      delay(10);
+    }
+
+    if (pressedLeft)
+    {
+      if (currentTime - time >= 20)
       {
-        counter++;
-        delay(1);
+        Serial.println("Esquerda");
+        bleKeyboard.write(KEY_LEFT_ARROW);
+        pressedLeft = false;
       }
-      if (counter > 100)
+      delay(500);
+    }
+    else if (pressedRight)
+    {
+      if (currentTime - time >= 20)
       {
-        if (counter >= 300)
-        {
-          Serial.println("Esquerda");
-          bleKeyboard.write(KEY_LEFT_ARROW);
-          pressed = false;
-        }
-        else
-        {
-          Serial.println("Direita");
-          bleKeyboard.write(KEY_RIGHT_ARROW);
-          pressed = false;
-        }
-        delay(500);
+        Serial.println("DIREITA");
+        bleKeyboard.write(KEY_RIGHT_ARROW);
+        pressedRight = false;
       }
+      delay(500);
     }
   }
 }
+

@@ -29,6 +29,16 @@
             "projectEnvName": "esp32dev",
             "toolchainBinDir": "/Users/bruno.cunha/.platformio/packages/toolchain-xtensa32/bin",
             "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug (without uploading)",
+            "executable": "/Users/bruno.cunha/Code/BluetoothPageTurner/.pio/build/esp32dev/firmware.elf",
+            "projectEnvName": "esp32dev",
+            "toolchainBinDir": "/Users/bruno.cunha/.platformio/packages/toolchain-xtensa32/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "loadMode": "manual"
         }
     ]
 }
